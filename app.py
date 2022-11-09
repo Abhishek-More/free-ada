@@ -1,22 +1,12 @@
-from flask import Flask
+from flask import Flask,jsonify
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 import os
+from random_word import RandomWords
+import time
 
 
 def loadDriver():
-	# options = webdriver.FirefoxOptions()
-	# options.log.level = "trace"
-	# options.add_argument("-remote-debugging-port=9224")
-	# options.add_argument("-headless")
-	# options.add_argument("-disable-gpu")
-	# options.add_argument("-no-sandbox")
-	# binary = FirefoxBinary(os.environ.get('FIREFOX_BIN'))
-	# firefox_driver = webdriver.Firefox(
-	# 	firefox_binary=binary,
-	# 	executable_path=os.environ.get('GECKODRIVER_PATH'),
-	# 	options=options)
-
   chrome_options = webdriver.ChromeOptions()
   chrome_options.binary_location = os.environ.get("CHROME_BINARY_PATH")
   chrome_options.add_argument("--headless")
@@ -27,7 +17,9 @@ def loadDriver():
 
 def getNewAccount():
   
-  email = ""
+  r = RandomWords()
+
+  email = "tamuhack" + r.get_random_word() + "@gmail.com"
 
   browser = loadDriver()
   print("browser loaded")
@@ -43,7 +35,7 @@ def getNewAccount():
   elem.send_keys('Account')
 
   elem = browser.find_element(By.ID, 'email')
-  elem.send_keys('emailrandomtestingmale@gmail.com')
+  elem.send_keys(email)
 
   elem = browser.find_element(By.ID, 'phone_number')
   elem.send_keys('6143456980')
@@ -55,20 +47,20 @@ def getNewAccount():
   elem.send_keys('newpass1234')
 
   elem = browser.find_element(By.ID, 'terms')
-  print(elem)
   elem.click()
 
   elem = browser.find_element(By.ID, 'reward_submission')
-  #elem.click()
+  elem.click()
+  time.sleep(5)
   
   browser.quit()
-
   print("DONE!")
+  return email
 
 app = Flask(__name__)
 
 @app.route("/")
 def index():
-  getNewAccount()
-  return "Hello World!"
+  email = getNewAccount()
+  return jsonify({"email": email}) 
 
