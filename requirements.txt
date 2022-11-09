@@ -2,3 +2,5 @@ flask
 selenium
 gunicorn
 random-word
+beautifulsoup
+lxml

@@ -1,9 +1,10 @@
-from flask import Flask,jsonify
+from flask import Flask
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 import os
 from random_word import RandomWords
 import time
+from bs4 import BeautifulSoup
 
 
 def loadDriver():
@@ -21,6 +22,7 @@ def getNewAccount():
 
   email = "tamuhack" + r.get_random_word() + "@gmail.com"
 
+  #input text into browser (using selenium :( ) and create new account
   browser = loadDriver()
   print("browser loaded")
   browser.set_window_size(600, 800)
@@ -52,15 +54,20 @@ def getNewAccount():
   elem = browser.find_element(By.ID, 'reward_submission')
   elem.click()
   time.sleep(5)
-  
-  browser.quit()
+
+  #start parsing
+  soup = BeautifulSoup(browser.page_source, 'lxml')
+  barcode = str(soup.find(class_="text-barcode"))
+  barcode = barcode.split("<script")[0] + "</div>"
+  #browser.quit()
   print("DONE!")
-  return email
+  return barcode
 
 app = Flask(__name__)
 
 @app.route("/")
 def index():
-  email = getNewAccount()
-  return jsonify({"email": email}) 
+  barcode = getNewAccount()
+  #return jsonify({"email": email}) 
+  return barcode
 
