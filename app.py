@@ -54,6 +54,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
+
   #getNewAccount()
   return "Hello World!"
 
