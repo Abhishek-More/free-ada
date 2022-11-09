@@ -3,23 +3,32 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+from selenium import webdriver
+import os
+
 import os
 
 
 def loadDriver():
-	options = webdriver.FirefoxOptions()
-	options.log.level = "trace"
-	options.add_argument("-remote-debugging-port=9224")
-	options.add_argument("-headless")
-	options.add_argument("-disable-gpu")
-	options.add_argument("-no-sandbox")
-	binary = FirefoxBinary(os.environ.get('FIREFOX_BIN'))
-	firefox_driver = webdriver.Firefox(
-		firefox_binary=binary,
-		executable_path=os.environ.get('GECKODRIVER_PATH'),
-		options=options)
+	# options = webdriver.FirefoxOptions()
+	# options.log.level = "trace"
+	# options.add_argument("-remote-debugging-port=9224")
+	# options.add_argument("-headless")
+	# options.add_argument("-disable-gpu")
+	# options.add_argument("-no-sandbox")
+	# binary = FirefoxBinary(os.environ.get('FIREFOX_BIN'))
+	# firefox_driver = webdriver.Firefox(
+	# 	firefox_binary=binary,
+	# 	executable_path=os.environ.get('GECKODRIVER_PATH'),
+	# 	options=options)
 
-	return firefox_driver
+  chrome_options = webdriver.ChromeOptions()
+  chrome_options.binary_location = os.environ.get("CHROME_BINARY_PATH")
+  chrome_options.add_argument("--headless")
+  chrome_options.add_argument("--disable-dev-shm-usage")
+  chrome_options.add_argument("--no-sandbox")
+  driver = webdriver.Chrome(executable_path=os.environ.get("CHROME_DRIVER_PATH"), chrome_options=chrome_options)
+  return driver
 
 def getNewAccount():
   browser = loadDriver()
