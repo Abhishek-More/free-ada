@@ -1,17 +1,17 @@
-from flask import Flask
+from flask import Flask, send_file
 from selenium.webdriver.common.by import By
 from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import os
 from random_word import RandomWords
+import random
 import time
 from bs4 import BeautifulSoup
 
 
 def loadDriver():
   opts = webdriver.FirefoxOptions()
-  opts.add_argument("--headless")
-  opts.add_argument("--disable-dev-shm-usage")
-  opts.add_argument("--no-sandbox")
   return webdriver.Firefox(options=opts)
 
 
@@ -27,7 +27,9 @@ def getNewAccount():
   
   r = RandomWords()
 
-  email = "tamuhack" + r.get_random_word() + "@gmail.com"
+  email = "th" + r.get_random_word() + "@gmail.com"
+  randomNum = random.randint(1001234,9999999)
+  
 
   #input text into browser (using selenium :( ) and create new account
   browser = loadDriver()
@@ -47,7 +49,7 @@ def getNewAccount():
   elem.send_keys(email)
 
   elem = browser.find_element(By.ID, 'phone_number')
-  elem.send_keys('6143456980')
+  elem.send_keys('614' + str(randomNum))
 
   elem = browser.find_element(By.ID, 'password')
   elem.send_keys('newpass1234')
@@ -60,23 +62,31 @@ def getNewAccount():
 
   elem = browser.find_element(By.ID, 'reward_submission')
   elem.click()
-  time.sleep(10)
+  
+  try:
+    elem = WebDriverWait(browser, 10).until(
+        EC.presence_of_element_located((By.CLASS_NAME, "text-barcode"))
+    )
+
+    soup = BeautifulSoup(browser.page_source, 'lxml')
+    barcode = str(soup.find(class_="text-barcode"))
+    barcode = barcode.split("<script")[0] + "</div>"
+    time.sleep(1)
+    print("done")
+    browser.quit()
+    return barcode
+  except:
+    browser.quit()
+    return "<h1>ERROR...Try again later</h1>"
+
 
   #start parsing
-  soup = BeautifulSoup(browser.page_source, 'lxml')
-  print(soup)
-  barcode = str(soup.find(class_="text-barcode"))
-  barcode = barcode.split("<script")[0] + "</div>"
-  time.sleep(1)
-  browser.quit()
-  print("DONE!")
-  return barcode
 
 app = Flask(__name__)
 
 @app.route("/")
 def index():
+  #send_file("thinterwhistled.png")
   barcode = getNewAccount()
   #return jsonify({"email": email}) 
   return barcode
-
