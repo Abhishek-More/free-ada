@@ -1,11 +1,6 @@
 from flask import Flask
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
-from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
-from selenium import webdriver
-import os
-
 import os
 
 
@@ -31,12 +26,18 @@ def loadDriver():
   return driver
 
 def getNewAccount():
+  
+  email = ""
+
   browser = loadDriver()
+  print("browser loaded")
   browser.set_window_size(600, 800)
   browser.get('https://mypiada.com/rewards')
+  print("Page navigated")
 
   elem = browser.find_element(By.ID, 'fname')
   elem.send_keys('New')
+  print("found first")
 
   elem = browser.find_element(By.ID, 'lname')
   elem.send_keys('Account')
@@ -54,10 +55,13 @@ def getNewAccount():
   elem.send_keys('newpass1234')
 
   elem = browser.find_element(By.ID, 'terms')
+  print(elem)
   elem.click()
 
   elem = browser.find_element(By.ID, 'reward_submission')
-  elem.click()
+  #elem.click()
+  
+  browser.quit()
 
   print("DONE!")
 
@@ -65,7 +69,6 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-
   getNewAccount()
   return "Hello World!"
 
