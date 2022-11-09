@@ -53,14 +53,15 @@ def getNewAccount():
 
   elem = browser.find_element(By.ID, 'reward_submission')
   elem.click()
-  time.sleep(5)
+  time.sleep(10)
 
   #start parsing
   soup = BeautifulSoup(browser.page_source, 'lxml')
   print(soup)
   barcode = str(soup.find(class_="text-barcode"))
   barcode = barcode.split("<script")[0] + "</div>"
-  #browser.quit()
+  time.sleep(1)
+  browser.quit()
   print("DONE!")
   return barcode
 
