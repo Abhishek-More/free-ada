@@ -6,7 +6,7 @@ from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 import os
 
 
-def  loadDriver():
+def loadDriver():
 	options = webdriver.FirefoxOptions()
 	options.log.level = "trace"
 	options.add_argument("-remote-debugging-port=9224")
@@ -33,7 +33,7 @@ def getNewAccount():
   elem.send_keys('Account')
 
   elem = browser.find_element(By.ID, 'email')
-  elem.send_keys('emailrandomtestingman@gmail.com')
+  elem.send_keys('emailrandomtestingmale@gmail.com')
 
   elem = browser.find_element(By.ID, 'phone_number')
   elem.send_keys('6143456980')
@@ -50,11 +50,13 @@ def getNewAccount():
   elem = browser.find_element(By.ID, 'reward_submission')
   elem.click()
 
+  print("DONE!")
+
 app = Flask(__name__)
 
 @app.route("/")
 def index():
 
-  #getNewAccount()
+  getNewAccount()
   return "Hello World!"
 
