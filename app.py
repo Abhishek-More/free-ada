@@ -2,13 +2,27 @@ from flask import Flask
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 import os
 
 
-# Now you can start using Selenium
+def  loadDriver():
+	options = webdriver.FirefoxOptions()
+	options.log.level = "trace"
+	options.add_argument("-remote-debugging-port=9224")
+	options.add_argument("-headless")
+	options.add_argument("-disable-gpu")
+	options.add_argument("-no-sandbox")
+	binary = FirefoxBinary(os.environ.get('FIREFOX_BIN'))
+	firefox_driver = webdriver.Firefox(
+		firefox_binary=binary,
+		executable_path=os.environ.get('GECKODRIVER_PATH'),
+		options=options)
+
+	return firefox_driver
 
 def getNewAccount():
-  browser = webdriver.Firefox()
+  browser = loadDriver()
   browser.set_window_size(600, 800)
   browser.get('https://mypiada.com/rewards')
 
@@ -40,6 +54,6 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-  getNewAccount()
+  #getNewAccount()
   return "Hello World!"
 
