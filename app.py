@@ -57,6 +57,7 @@ def getNewAccount():
 
   #start parsing
   soup = BeautifulSoup(browser.page_source, 'lxml')
+  print(soup)
   barcode = str(soup.find(class_="text-barcode"))
   barcode = barcode.split("<script")[0] + "</div>"
   #browser.quit()
