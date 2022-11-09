@@ -8,6 +8,13 @@ from bs4 import BeautifulSoup
 
 
 def loadDriver():
+  opts = webdriver.FirefoxOptions()
+  opts.add_argument("--headless")
+  opts.add_argument("--disable-dev-shm-usage")
+  opts.add_argument("--no-sandbox")
+  return webdriver.Firefox(options=opts)
+
+
   chrome_options = webdriver.ChromeOptions()
   chrome_options.binary_location = os.environ.get("CHROME_BINARY_PATH")
   chrome_options.add_argument("--headless")
