@@ -12,7 +12,7 @@ Example: https://github.com/mozilla/geckodriver/releases
 
 There are two ways to run this program: you can choose to run the script or setup a flask server. Running the script alone creates a new account and leaves the browser window running, allowing you to submit an order. Setting up a flask server allows for multiple people to get accounts (given that they know your local IP). All they need to do is enter the following address into their browser:
 
-`[YOUR_IP]:[PORT #(probably 5000)]`
+`[YOUR_IP]:5000`
 
 
 ### Commands
