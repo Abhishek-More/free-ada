@@ -15,7 +15,7 @@ There are two ways to run this program: you can choose to run the script or setu
 `[YOUR_IP]:[PORT #(probably 5000)]`
 
 
-#### Commands
+### Commands
 
 Initialize the flask server\
 `flask run`
