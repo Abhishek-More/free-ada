@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import constants
 import os
 from random_word import RandomWords
 import random
@@ -10,13 +11,14 @@ import time
 from bs4 import BeautifulSoup
 
 
+
 def loadDriver():
-  # opts = webdriver.FirefoxOptions()
-  # return webdriver.Firefox(options=opts)
+  #Comment this line out if you have chrome webdriver
+  #return webdriver.Firefox()
 
   return webdriver.Chrome()
 
-def getNewAccount():
+def getNewAccount(wait=False):
   
   r = RandomWords()
 
@@ -31,12 +33,12 @@ def getNewAccount():
   print("Page navigated")
 
   elem = browser.find_element(By.ID, 'fname')
-  elem.send_keys('Abhishek')
+  elem.send_keys(constants.first_name)
   print("found first")
   time.sleep(0.5)
 
   elem = browser.find_element(By.ID, 'lname')
-  elem.send_keys('More')
+  elem.send_keys(constants.last_name)
   time.sleep(0.5)
 
   elem = browser.find_element(By.ID, 'email')
@@ -48,11 +50,11 @@ def getNewAccount():
   time.sleep(0.5)
 
   elem = browser.find_element(By.ID, 'password')
-  elem.send_keys('newpass1234')
+  elem.send_keys(constants.password)
   time.sleep(0.5)
 
   elem = browser.find_element(By.ID, 'confirm_password')
-  elem.send_keys('newpass1234')
+  elem.send_keys(constants.password)
   time.sleep(0.5)
 
   elem = browser.find_element(By.ID, 'terms')
@@ -70,13 +72,23 @@ def getNewAccount():
     soup = BeautifulSoup(browser.page_source, 'lxml')
     barcode = str(soup.find(class_="text-barcode"))
     barcode = barcode.split("<script")[0] + "</div>"
-    time.sleep(1)
+
+    print("Email: ", email)
+    print("Password: newpass1234")
     print("done")
-    browser.quit()
+
+    if wait:
+      time.sleep(100000)
+
+    #browser.quit()
     return barcode, email
   except:
     browser.quit()
     return "<h1>ERROR...Try again later</h1>", "none"
+
+if __name__ == "__main__":
+    _, email = getNewAccount(wait=True)
+    
 
 app = Flask(__name__)
 
@@ -88,8 +100,5 @@ def index():
   return "<div>" + barcode + "<p>Email: " + email + "</p><p>Password: newpass1234</p></div>"
 
 
-if __name__ == "main":
-    _, email = getNewAccount()
-    print("Email: ", email)
-    print("Password: newpass1234")
+
 
