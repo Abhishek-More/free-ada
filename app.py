@@ -1,31 +1,34 @@
-from flask import Flask, send_file
 from selenium.webdriver.common.by import By
 from selenium import webdriver
+from seleniumrequests import Chrome
+from seleniumrequests import Firefox
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import constants
-import os
 from random_word import RandomWords
 import random
 import time
-from bs4 import BeautifulSoup
+
 
 
 
 def loadDriver():
   #Comment this line out if you have chrome webdriver
-  #return webdriver.Firefox()
+  return Firefox() 
 
-  return webdriver.Chrome()
+  return Chrome()
 
 def getNewAccount(wait=False):
   
   r = RandomWords()
-
   email = "th" + r.get_random_word() + "@gmail.com"
+  
+  #Create random phone number
   randomNum = random.randint(1001234,9999999)
   
-  #input text into browser (using selenium :( ) and create new account
+  #input text into browser using selenium and create new account
+  #Browser MUST be mobile-sized since the discount only spawns on mobile
+  #Whoever designed that needs to be fired
   browser = loadDriver()
   print("browser loaded")
   browser.set_window_size(600, 800)
@@ -65,40 +68,37 @@ def getNewAccount(wait=False):
   elem.click()
   
   try:
+    #Wait until the barcode is seen.
+    #If barcode isn't seen within 10 seconds, throw error. 
     elem = WebDriverWait(browser, 10).until(
       EC.presence_of_element_located((By.CLASS_NAME, "text-barcode"))
     )
-
-    soup = BeautifulSoup(browser.page_source, 'lxml')
-    barcode = str(soup.find(class_="text-barcode"))
-    barcode = barcode.split("<script")[0] + "</div>"
 
     print("Email: ", email)
     print("Password: newpass1234")
     print("done")
 
-    if wait:
-      time.sleep(100000)
+    #yes, this is necessary
+    browser.get("https://mypiada.com/order/restaurants/college-station/set")
+    time.sleep(5)
+    browser.get("https://mypiada.com/order/restaurants/college-station/set")
 
-    #browser.quit()
-    return barcode, email
-  except:
-    browser.quit()
-    return "<h1>ERROR...Try again later</h1>", "none"
-
-if __name__ == "__main__":
-    _, email = getNewAccount(wait=True)
+    #POST the order to checkout (i order the same thing everytime)
+    if constants.order != None and constants.order != '':
+      browser.request('POST', 'https://mypiada.com/products/', data=constants.order)
+      print("Order request sent")
+      browser.get("https://mypiada.com/order/checkout")
     
 
-app = Flask(__name__)
+    if wait:
+        while True:
+            pass
 
-@app.route("/")
-def index():
-  #send_file("thinterwhistled.png")
-  barcode, email = getNewAccount()
-  #return jsonify({"email": email}) 
-  return "<div>" + barcode + "<p>Email: " + email + "</p><p>Password: newpass1234</p></div>"
+  except:
+    browser.quit()
+    print("Error!")
 
-
-
+if __name__ == "__main__":
+    getNewAccount(wait=True)
+    
 

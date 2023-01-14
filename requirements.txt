@@ -1,6 +1,2 @@
-flask
 selenium
-gunicorn
 random-word
-beautifulsoup4
-lxml
