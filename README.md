@@ -6,7 +6,7 @@
 * Install a webdriver for your browser and add it to PATH\
 Example: https://github.com/mozilla/geckodriver/releases
 
-* Change contants.py as desired
+* CHANGE CONSTANTS.PY
 
 ## How to run 
 
