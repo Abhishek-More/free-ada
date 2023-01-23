@@ -1,3 +1,5 @@
+This automation allows you to get $5 off at your favorite italian street food restaurant. It's like the student discount, but forever 😎
+
 ## Installation + Config
 
 * Install Python Libraries with \
