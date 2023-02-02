@@ -1,5 +1,5 @@
-first_name = "Abhishek"
-last_name = "More"
+first_name = "Li"
+last_name = "Shen"
 password = "newpass1234"
 
 #Piada orders get saved to checkout via a POST request
