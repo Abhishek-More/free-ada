@@ -1,3 +1,7 @@
+### IMPORTANT: Excessive use of this bot has caused numerous users to have their credit cards blacklisted. I'm currently in the process of implementing a fix, but until then, use with caution!
+
+This automation allows you to get $5 off at your favorite italian street food restaurant. It's like the student discount, but forever 😎
+
 ## Installation + Config
 
 * Install Python Libraries with \
@@ -6,7 +10,7 @@
 * Install a webdriver for your browser and add it to PATH\
 Example: https://github.com/mozilla/geckodriver/releases
 
-* Change contants.py as desired
+* CHANGE CONSTANTS.PY
 
 ## How to run 
 
