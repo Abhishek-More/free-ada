@@ -1,4 +1,4 @@
-### IMPORTANT: Excessive use of this bot has caused numerous users to have their credit cards blacklisted. I'm currently in the process of implementing a fix, but until then, use with caution!
+### IMPORTANT: Excessive use of this bot has caused numerous users to have their credit cards blacklisted. If you want to use this, use Privacy to generate temp credit cards at no cost!
 
 This automation allows you to get $5 off at your favorite italian street food restaurant. It's like the student discount, but forever 😎
 
